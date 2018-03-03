@@ -1,2 +1,2 @@
-# News Aggregator  [![Build Status](https://travis-ci.org/PK398/RSS.svg?branch=master)](https://travis-ci.org/PK398/RSS)
+# News Aggregator  [![Build Status](https://travis-ci.org/PK398/RSS.svg?branch=master)](https://travis-ci.org/PK398/RSS) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/77b1b02375424bf685096c03a0902900)](https://www.codacy.com/app/pranavkalidindi/NewsAggregator?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=PK398/NewsAggregator&amp;utm_campaign=Badge_Grade)
 A Personalised RSS Reader
