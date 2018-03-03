@@ -19,6 +19,22 @@
     <gaffer.version>1.2.0</gaffer.version>
   </properties>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cobertura-maven-plugin</artifactId>
+        <version>2.7</version>
+        <configuration>
+          <formats>
+            <format>html</format>
+            <format>xml</format>
+          </formats>
+          <check />
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
   <modules>
     <module>RSS-model</module>
