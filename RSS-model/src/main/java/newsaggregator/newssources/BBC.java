@@ -1,4 +1,4 @@
-package RSS.NewsAggregator.NewsSources;
+package newsaggregator.newssources;
 
 import org.jdom2.Element;
 import org.jdom2.Namespace;

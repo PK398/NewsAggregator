@@ -1,4 +1,4 @@
-package RSS.NewsAggregator.NewsSources;
+package newsaggregator.newssources;
 
 import java.io.IOException;
 import java.net.MalformedURLException;

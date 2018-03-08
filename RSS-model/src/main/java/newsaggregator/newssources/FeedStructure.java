@@ -1,4 +1,4 @@
-package RSS.NewsAggregator.NewsSources;
+package newsaggregator.newssources;
 
 public class FeedStructure {
   private final String title;
