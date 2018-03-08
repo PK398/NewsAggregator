@@ -23,6 +23,36 @@ public abstract class RSSParser {
     return url;
   }
 
+
+  private List<FeedStructure> getStories(Element channel) {
+    List<FeedStructure> structures = new ArrayList<FeedStructure>();
+    String topic = getTopic(channel.getChildren("title").get(0).getValue());
+    List<Element> stories = channel.getChildren("item");
+
+    for (Element story : stories) {
+      Element title = story.getChild("title");
+      System.out.println("title: " + title.getText());
+      Element description = story.getChild("description");
+      System.out.println("description: " + description.getText());
+      Element link = story.getChild("link");
+      System.out.println("link: " + link.getText());
+      Element guid = story.getChild("guid");
+      System.out.println("guid: " + guid.getText());
+      Element pubDate = story.getChild("pubDate");
+      System.out.println("pubDate: " + pubDate.getText());
+      String image = getImage(story);
+      System.out.println(image);
+      String author = getAuthor(story);
+      System.out.println(author);
+      FeedStructure structure = new FeedStructure(title.getText(), description.getText(),
+          link.getText(), image, author,
+          guid.getText(), "", pubDate.getText(), topic);
+      structures.add(structure);
+    }
+
+    return structures;
+  }
+
   public List<FeedStructure> parseRSS(URL url) {
     List<FeedStructure> structures = new ArrayList<FeedStructure>();
     try {
@@ -31,31 +61,7 @@ public abstract class RSSParser {
       Element rootElem = document.getRootElement();
       Element channel = rootElem.getChildren().get(0);
       System.out.println(channel.getChildren("title").get(0).getValue());
-      String topic = getTopic(channel.getChildren("title").get(0).getValue());
-      List<Element> stories = channel.getChildren("item");
-
-      for (Element story : stories) {
-        Element title = story.getChild("title");
-        System.out.println("title: " + title.getText());
-        Element description = story.getChild("description");
-        System.out.println("description: " + description.getText());
-        Element link = story.getChild("link");
-        System.out.println("link: " + link.getText());
-        Element guid = story.getChild("guid");
-        System.out.println("guid: " + guid.getText());
-        Element pubDate = story.getChild("pubDate");
-        System.out.println("pubDate: " + pubDate.getText());
-        //System.out.println(story.getChild("thumbnail", Namespace.getNamespace( "http://search.yahoo.com/mrss/")).getAttributeValue("url"));
-        //Element image = story
-        //    .getChild("thumbnail", Namespace.getNamespace("//search.yahoo.com/mrss/"));
-        //System.out.println("image: " + image.getAttributeValue("url"));
-        String image = getImage(story);
-        String author = getAuthor(story);
-        FeedStructure structure = new FeedStructure(title.getText(), description.getText(),
-            link.getText(), image, author,
-            guid.getText(), "", pubDate.getText(), topic);
-        structures.add(structure);
-      }
+      structures = getStories(channel);
     } catch (JDOMException e) {
       e.printStackTrace();
     } catch (IOException e) {
