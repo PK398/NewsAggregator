@@ -13,6 +13,110 @@
   <groupId>RSS</groupId>
   <artifactId>RSS-rest</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <!--<packaging>war</packaging>-->
+  <packaging>war</packaging>
+
+
+  <properties>
+    <standalone-path>rest</standalone-path>
+    <standalone-port>8080</standalone-port>
+  </properties>
+
+
+  <dependencies>
+    <dependency>
+      <groupId>RSS</groupId>
+      <artifactId>RSS-model</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.10</version>
+        <dependencies>
+          <dependency>
+            <groupId>uk.gov.gchq.gaffer</groupId>
+            <artifactId>accumulo-rest</artifactId> <!-- Or your chosen store, e.g 'accumulo-rest' -->
+            <version>1.2.0</version>
+            <type>war</type>
+          </dependency>
+        </dependencies>
+        <executions>
+          <execution>
+            <id>unpack</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>uk.gov.gchq.gaffer</groupId>
+                  <artifactId>accumulo-rest</artifactId> <!-- Or your chosen store, e.g 'accumulo-rest' -->
+                  <version>1.2.0</version>
+                  <type>war</type>
+                  <overWrite>false</overWrite>
+                  <outputDirectory>
+                    ${project.build.directory}/${project.artifactId}-${project.version}
+                  </outputDirectory>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>RSS-demo</id>
+      <properties>
+        <maven.test.skip>true</maven.test.skip>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.tomcat.maven</groupId>
+            <artifactId>tomcat7-maven-plugin</artifactId>
+            <version>2.0</version>
+            <configuration>
+              <path>/${standalone-path}</path>
+              <port>${standalone-port}</port>
+              <systemProperties>
+                <gaffer.graph.id>
+                  RSSGaffer
+                </gaffer.graph.id>
+                <gaffer.rest-api.basePath>${standalone-path}
+                </gaffer.rest-api.basePath>
+                <gaffer.schemas>
+                  /Users/pranav/Hack-a-Project/NewsAggregator/RSS-model/src/main/resources/schema
+                </gaffer.schemas>
+                <gaffer.storeProperties>
+                  /Users/pranav/Hack-a-Project/NewsAggregator/RSS-rest/target/classes/accumulo/store.properties
+                </gaffer.storeProperties>
+                <gaffer.error-mode.debug>
+                  false
+                </gaffer.error-mode.debug>
+              </systemProperties>
+            </configuration>
+            <executions>
+              <execution>
+                <id>deploy</id>
+                <phase>integration-test</phase>
+                <goals>
+                  <goal>run-war</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
 </project>
