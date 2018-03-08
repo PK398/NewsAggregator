@@ -1,0 +1,39 @@
+{
+  "edges": {
+    "StoryRelation": {
+      "description": "Story's topic",
+      "source": "topic",
+      "destination": "guid",
+      "directed": "false",
+      "properties": {
+        "count": "count.long"
+      }
+    }
+  },
+  "entities": {
+    "Story": {
+      "description": "Story",
+      "vertex": "guid",
+      "properties": {
+        "title" : "title",
+        "description": "description",
+        "pubDate": "date.published",
+        "link": "link",
+        "image": "image",
+        "author": "author",
+        "source": "source",
+        "count": "count.long",
+        "hllp": "hllp"
+      }
+    },
+    "Topic":{
+      "description": "",
+      "vertex":"topic",
+      "properties":{
+        "count": "count.long",
+        "hllp": "hllp"
+      }
+    }
+
+  }
+}
