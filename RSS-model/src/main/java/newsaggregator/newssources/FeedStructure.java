@@ -1,6 +1,7 @@
 package newsaggregator.newssources;
 
 public class FeedStructure {
+
   private final String title;
   private final String description;
   private final String link;

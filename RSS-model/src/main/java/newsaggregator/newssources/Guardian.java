@@ -19,7 +19,8 @@ public class Guardian extends RSSParser {
 
   @Override
   public String getAuthor(Element story) {
-    Element author = story.getChild("creator", Namespace.getNamespace("http://purl.org/dc/elements/1.1/"));
+    Element author = story
+        .getChild("creator", Namespace.getNamespace("http://purl.org/dc/elements/1.1/"));
     return author.getText();
   }
 }

@@ -7,7 +7,7 @@ public class BBC extends RSSParser {
 
   @Override
   public String getTopic(String topic) {
-    String[] strings =  topic.split("- ");
+    String[] strings = topic.split("- ");
     System.out.println(strings[1]);
     return strings[1];
 

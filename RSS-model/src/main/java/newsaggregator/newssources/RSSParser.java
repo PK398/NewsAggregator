@@ -13,7 +13,7 @@ import org.jdom2.input.SAXBuilder;
 
 public abstract class RSSParser {
 
-  public  URL getURL(String surl) {
+  public URL getURL(String surl) {
     URL url = null;
     try {
       url = new URL(surl);
