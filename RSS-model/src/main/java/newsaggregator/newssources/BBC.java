@@ -5,6 +5,10 @@ import org.jdom2.Namespace;
 
 public class BBC extends RSSParser {
 
+  public BBC(CacheMap<String, Object> cache) {
+    super(cache);
+  }
+
   @Override
   public String getTopic(String topic) {
     String[] strings = topic.split("- ");

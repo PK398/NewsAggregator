@@ -13,6 +13,12 @@ import org.jdom2.input.SAXBuilder;
 
 public abstract class RSSParser {
 
+  private CacheMap<String, Object> cache;
+
+  public RSSParser(CacheMap<String, Object> cache){
+    this.cache = cache;
+  }
+
   public URL getURL(String surl) {
     URL url = null;
     try {
@@ -30,26 +36,28 @@ public abstract class RSSParser {
     List<Element> stories = channel.getChildren("item");
 
     for (Element story : stories) {
-      Element title = story.getChild("title");
-      System.out.println("title: " + title.getText());
-      Element description = story.getChild("description");
-      System.out.println("description: " + description.getText());
-      Element link = story.getChild("link");
-      System.out.println("link: " + link.getText());
       Element guid = story.getChild("guid");
-      System.out.println("guid: " + guid.getText());
-      Element pubDate = story.getChild("pubDate");
-      System.out.println("pubDate: " + pubDate.getText());
-      String image = getImage(story);
-      System.out.println(image);
-      String author = getAuthor(story);
-      System.out.println(author);
-      FeedStructure structure = new FeedStructure(title.getText(), description.getText(),
-          link.getText(), image, author,
-          guid.getText(), "", pubDate.getText(), topic);
-      structures.add(structure);
+      if(!cache.containsKey(guid.getText())) {
+        Element title = story.getChild("title");
+        System.out.println("title: " + title.getText());
+        Element description = story.getChild("description");
+        System.out.println("description: " + description.getText());
+        Element link = story.getChild("link");
+        System.out.println("link: " + link.getText());
+        System.out.println("guid: " + guid.getText());
+        Element pubDate = story.getChild("pubDate");
+        System.out.println("pubDate: " + pubDate.getText());
+        String image = getImage(story);
+        System.out.println(image);
+        String author = getAuthor(story);
+        System.out.println(author);
+        FeedStructure structure = new FeedStructure(title.getText(), description.getText(),
+            link.getText(), image, author,
+            guid.getText(), "", pubDate.getText(), topic);
+        structures.add(structure);
+        cache.put(guid.getText(), null);
+      }
     }
-
     return structures;
   }
 

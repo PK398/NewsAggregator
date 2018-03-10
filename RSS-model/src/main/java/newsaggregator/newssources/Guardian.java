@@ -5,9 +5,14 @@ import org.jdom2.Namespace;
 
 public class Guardian extends RSSParser {
 
+  public Guardian(CacheMap<String, Object> cache) {
+    super(cache);
+  }
+
   @Override
   public String getTopic(String topic) {
-    return null;
+    String[] s = topic.split("|");
+    return s[0];
   }
 
   @Override
