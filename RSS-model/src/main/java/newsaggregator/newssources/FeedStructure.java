@@ -1,5 +1,7 @@
 package newsaggregator.newssources;
 
+import java.util.List;
+
 public class FeedStructure {
 
   private final String title;
@@ -11,9 +13,10 @@ public class FeedStructure {
   private final String source;
   private final String pubDate;
   private final String topic;
+  private final List<String> tags;
 
   public FeedStructure(String title, String description, String link, String linkToImage,
-      String author, String guid, String source, String pubDate, String topic) {
+      String author, String guid, String source, String pubDate, String topic, List<String> tags) {
     this.title = title;
     this.description = description;
     this.link = link;
@@ -23,6 +26,7 @@ public class FeedStructure {
     this.source = source;
     this.pubDate = pubDate;
     this.topic = topic;
+    this.tags = tags;
   }
 
   public String getTopic() {
@@ -61,10 +65,14 @@ public class FeedStructure {
     return pubDate;
   }
 
+  public List<String> getTags() {
+    return tags;
+  }
+
   @Override
   public String toString() {
     return "RSS [title=" + title + ", description=" + description
         + ", link=" + link + ", linkToImage=" + linkToImage + ", author=" + author +
-        ", guid=" + guid + ", source=" + source + ", pubDate=" + pubDate + "]";
+        ", guid=" + guid + ", source=" + source + ", pubDate=" + pubDate + ", tags="+ tags + "]";
   }
 }
