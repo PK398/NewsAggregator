@@ -59,6 +59,40 @@ public class RSSFullElementGenerator implements OneToManyElementGenerator<FeedSt
         .property("hllp", dhllp)
         .build());
 
+    if(feedStructure.getTags() != null) {
+      elements.addAll(storyTags(feedStructure));
+    }
+
+    return elements;
+  }
+
+  private List<Element> storyTags (FeedStructure feedStructure) {
+    List<Element> elements = new ArrayList<>();
+    List<String> tags = feedStructure.getTags();
+
+    for (String tag: tags) {
+      final HyperLogLogPlus shllp = new HyperLogLogPlus(5, 5);
+      shllp.offer(feedStructure.getGuid());
+      final HyperLogLogPlus dhllp = new HyperLogLogPlus(5, 5);
+      dhllp.offer(tag);
+
+      elements.add(new Edge.Builder()
+          .group("StoryRelation")
+          .source(tag)
+          .dest(feedStructure.getGuid())
+          .directed(false)
+          .property("count", 1L)
+          .build());
+
+      elements.add(new Entity.Builder()
+          .group("Topic")
+          .vertex(tag)
+          .property("count", 1L)
+          .property("hllp", shllp)
+          .build());
+
+    }
+
     return elements;
   }
 

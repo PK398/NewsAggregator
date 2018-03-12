@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import newsaggregator.newssources.BBC;
+import newsaggregator.newssources.CacheMap;
 import newsaggregator.newssources.FeedStructure;
+import newsaggregator.newssources.Guardian;
 import uk.gov.gchq.gaffer.accumulostore.AccumuloProperties;
 import uk.gov.gchq.gaffer.commonutil.StreamUtil;
 import uk.gov.gchq.gaffer.commonutil.iterable.CloseableIterable;
@@ -40,12 +42,19 @@ public class RSSGaffer {
 
     final User user = new User(storeProperties.getUser());
 
-    BBC bbc = new BBC();
-    URL url = bbc.getURL("http://feeds.bbci.co.uk/news/rss.xml");
+    CacheMap cacheMap = CacheMap.getInstance();
+
+    BBC bbc = new BBC(cacheMap);
+    URL url = bbc.getURL("http://feeds.bbci.co.uk/news/politics/rss.xml");
     List<FeedStructure> structures = bbc.parseRSS(url);
     for (FeedStructure structure : structures) {
       System.out.println(structure);
     }
+
+//    Guardian guardian = new Guardian(cacheMap);
+//    URL urlg = guardian.getURL("https://www.theguardian.com/politics/rss");
+//    List<FeedStructure> structuresg = guardian.parseRSS(urlg);
+//    structures.addAll(structuresg);
 
     final OperationChain<Void> addOpChain = new OperationChain.Builder()
         .first(new GenerateElements.Builder<FeedStructure>()
@@ -60,11 +69,11 @@ public class RSSGaffer {
 
     graph.execute(addOpChain, user);
 
-    final CloseableIterable<? extends Element> edges = graph.execute(new GetAllElements(), user);
-    System.out.println("\nAll edges:");
-    for (final Element edge : edges) {
-      System.out.println(edge.toString());
-    }
+      final CloseableIterable<? extends Element> edges = graph.execute(new GetAllElements(), user);
+      System.out.println("\nAll edges:");
+      for (final Element edge : edges) {
+        System.out.println(edge.toString());
+      }
 
   }
 
