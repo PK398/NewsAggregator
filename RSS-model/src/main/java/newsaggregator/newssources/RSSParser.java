@@ -59,9 +59,9 @@ public abstract class RSSParser {
           String image = getImage(story);
           String author = getAuthor(story);
           String source = getSource();
-//          List<String> tags = getEntities(title, description);
-//          List<String> extraTags = getTags(story);
-//          Optional.ofNullable(extraTags).ifPresent(tags::addAll);
+          List<String> tags = getEntities(title, description);
+          List<String> extraTags = getTags(story);
+          Optional.ofNullable(extraTags).ifPresent(tags::addAll);
           FeedStructure structure = new FeedStructure(title, description, link, image, author, guid,
                                                    source, pubDate, topic, null);
           structures.add(structure);
@@ -72,30 +72,30 @@ public abstract class RSSParser {
     return structures;
   }
 
-//  private List<String> getEntities(String title, String desc) {
-//
-//    String entitySting = title.concat(" ").concat(desc);
-//
-//    // Instantiate the Language client com.google.cloud.language.v1.LanguageServiceClient
-//    try  {
-//      LanguageServiceClient language = LanguageServiceClient.create();
-//      com.google.cloud.language.v1.Document doc = com.google.cloud.language.v1.Document.newBuilder()
-//          .setContent(entitySting)
-//          .setType(Type.PLAIN_TEXT)
-//          .build();
-//      AnalyzeEntitiesRequest request = AnalyzeEntitiesRequest.newBuilder()
-//          .setDocument(doc)
-//          .setEncodingType(EncodingType.UTF16)
-//          .build();
-//
-//      AnalyzeEntitiesResponse response = language.analyzeEntities(request);
-//
-//      return response.getEntitiesList().stream().map(Entity::getName).collect(Collectors.toList());
-//    } catch (Exception e) {
-//      System.out.println("Entity Recognition Failed." + e);
-//    }
-//    return new ArrayList<>();
-//  }
+  private List<String> getEntities(String title, String desc) {
+
+    String entitySting = title.concat(" ").concat(desc);
+
+    // Instantiate the Language client com.google.cloud.language.v1.LanguageServiceClient
+    try  {
+      LanguageServiceClient language = LanguageServiceClient.create();
+      com.google.cloud.language.v1.Document doc = com.google.cloud.language.v1.Document.newBuilder()
+          .setContent(entitySting)
+          .setType(Type.PLAIN_TEXT)
+          .build();
+      AnalyzeEntitiesRequest request = AnalyzeEntitiesRequest.newBuilder()
+          .setDocument(doc)
+          .setEncodingType(EncodingType.UTF16)
+          .build();
+
+      AnalyzeEntitiesResponse response = language.analyzeEntities(request);
+
+      return response.getEntitiesList().stream().map(Entity::getName).collect(Collectors.toList());
+    } catch (Exception e) {
+      System.out.println("Entity Recognition Failed." + e);
+    }
+    return new ArrayList<>();
+  }
 
   public List<FeedStructure> parseRSS(URL url) {
     List<FeedStructure> structures = new ArrayList<FeedStructure>();
